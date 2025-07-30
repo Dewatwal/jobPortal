@@ -5,6 +5,8 @@ import { assets } from "../assets/assets";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
 import moment from "moment";
+import Jobcard from "../components/Jobcard";
+import Footer from "../components/Footer"
 
 const Applyjob = () => {
   const { id } = useParams();
@@ -24,7 +26,7 @@ const Applyjob = () => {
   }, [id, jobs]);
 
   return JobData ? (
-    <div>
+    <>
       <Navbar />
       <div className="min-h-screen flex flex-col py-10 container px-4 2xl:px-20 mx-auto">
         <div className="bg-white text-black rounded-lg w-full">
@@ -79,10 +81,27 @@ const Applyjob = () => {
                 Apply Now
               </button>
             </div>
+            {/* Right section More jobs */}
+            <div className="w-full lg:w-1/2 lg:mt-0 lg:ml-4 space-y-5" >
+              <h2 className="">More Jobs from {JobData.companyId.name}</h2>
+              {jobs
+                .filter(
+                  (job) =>
+                    job._id !== JobData._id &&
+                    job.companyId._id === JobData.companyId._id
+                )
+                .filter(job => true)
+                .slice(0, 4)
+                .map((job, index) => (
+                  <Jobcard key={index} job={job} />
+                ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+     
+     <Footer/>
+    </>
   ) : (
     <Loading />
   );
